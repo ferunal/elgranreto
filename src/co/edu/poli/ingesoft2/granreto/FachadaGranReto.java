@@ -171,19 +171,38 @@ public class FachadaGranReto implements IFachadaGranReto {
     }
 
     private boolean validarContenido() {
-        boolean numeros = true;
-        boolean operadores = true;
+        int numeros = 0;
+        int operadores = 0;
         if (expresionValida) {
-            numeros = validarNumerosExpresion(0);
-            numeros = validarNumerosExpresion(1);
-            numeros = validarNumerosExpresion(3);
-            numeros = validarNumerosExpresion(4);
-            numeros = validarNumerosExpresion(7);
-            operadores = validarPosicionesOperador(2);
-            operadores = validarPosicionesOperador(5);
-            operadores = validarPosicionesOperador(6);
-            operadores = validarPosicionesOperador(8);
-            return numeros && operadores;
+            if (!validarNumerosExpresion(0)) {
+                numeros++;
+            }
+
+            if (!validarNumerosExpresion(1)) {
+                numeros++;
+            }
+            if (!validarNumerosExpresion(3)) {
+                numeros++;
+            }
+            if (!validarNumerosExpresion(4)) {
+                numeros++;
+            }
+            if (!validarNumerosExpresion(7)) {
+                numeros++;
+            }
+            if (!validarPosicionesOperador(2)) {
+                operadores++;
+            }
+            if (!validarPosicionesOperador(5)) {
+                operadores++;
+            }
+            if (!validarPosicionesOperador(6)) {
+                operadores++;
+            }
+            if (!validarPosicionesOperador(8)) {
+                operadores++;
+            }
+            return (numeros == 0) && (operadores == 0);
         } else {
             return false;
         }
@@ -235,6 +254,7 @@ public class FachadaGranReto implements IFachadaGranReto {
     @Override
     public String calcular() {
         if (validarContenido()) {
+
             String numero1 = lstFilasArchivo.get(0);
             String numero2 = lstFilasArchivo.get(1);
             String operacion1 = lstFilasArchivo.get(2);
@@ -252,11 +272,13 @@ public class FachadaGranReto implements IFachadaGranReto {
             String strResultado = NumberFormat.getIntegerInstance().format(resultado4.doubleValue());
             StringBuilder strBResultado = new StringBuilder(strResultado);
             if (strResultado.length() > 8) {
-
                 strBResultado.replace(strBResultado.length() - 8, strBResultado.length() - 7, "'");
-
+            }
+            if (strResultado.length() > 16) {
+                strBResultado.replace(strBResultado.length() - 16, strBResultado.length() - 15, "'");
             }
             return strBResultado.toString();
+
         } else {
             return "ERROR";
         }
